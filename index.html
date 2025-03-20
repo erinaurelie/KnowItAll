@@ -14,23 +14,40 @@
 
         <h2>Select Category</h2>
         <ul class="categories-grid">
-            <li tabindex="0">Programming</li>
-            <li tabindex="0">General Knowledge</li>
-            <li tabindex="0">Mathematics</li>
-            <li tabindex="0">Entertainment</li>
+            <li data-category-id="">Any Category</li>
+            <li data-category-id="18">Programming</li>
+            <li data-category-id="9">General Knowledge</li>
+            <li data-category-id="19">Mathematics</li>
+            <li data-category-id="26">Celebrities</li>
+            <li data-category-id="23">History</li>
         </ul>
+
         <h2>No. of Questions</h2>
         <ul class="numbers-grid">
-            <li tabindex="0">5</li>
-            <li tabindex="0">10</li>
-            <li tabindex="0">15</li>
-            <li tabindex="0">20</li>
-            <li tabindex="0">25</li>
+            <li data-question-count="5">5</li>
+            <li data-question-count="10">10</li>
+            <li data-question-count="15">15</li>
+            <li data-question-count="20">20</li>
+            <li data-question-count="25">25</li>
+        </ul>
+
+        <h2>Difficulty</h2>
+        <ul class="difficulty-grid">
+            <li data-difficulty="">Any Difficulty</li>
+            <li data-difficulty="easy">Easy</li>
+            <li data-difficulty="medium">Medium</li>
+            <li data-difficulty="hard">Hard</li>
+        </ul>
+
+        <h2>Type</h2>
+        <ul class="type-grid">
+            <li data-question-type="">Any Type</li>
+            <li data-question-type="multiple">Multiple Choice</li>
+            <li data-question-type="boolean">True / False</li>
         </ul>
         <button class="start-quiz">Start Quiz</button>
     </div>
 
-    <script src="index.js"></script>
 
     <div class="questions-div">
         <div class="header">
@@ -51,6 +68,7 @@
             <button class="start-quiz">Next</button>
         </div>
     </div>
-</body>
 
+    <script src="index.js"></script>
+</body>
 </html>

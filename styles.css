@@ -26,32 +26,49 @@ h2 {
 
 .categories-grid,
 .numbers-grid,
-.questions-div ul {
+.question-options,
+.difficulty-grid,
+.type-grid {
   display: grid;
   list-style: none;
 }
 
 .categories-grid {
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
 }
 
 .numbers-grid {
   grid-template-columns: repeat(5, 1fr);
-  gap: 30px;
 }
 
+.difficulty-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.type-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
 .categories-grid li,
-.numbers-grid li {
+.numbers-grid li,
+.difficulty-grid li,
+.type-grid li {
   border: 1px solid;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
-.categories-grid li:focus,
-.numbers-grid li:focus,
-.question-options li:focus {
+.difficulty-grid,
+.categories-grid,
+.numbers-grid,
+.type-grid {
+  gap: 25px;
+}
+
+
+
+.active {
   background-color: var(--accent-color);
   outline: 2px solid var(--accent-color);
 }
@@ -70,6 +87,7 @@ h2 {
   margin-bottom: 10px;
   font-weight: bold;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 
 .header {
@@ -78,6 +96,9 @@ h2 {
   gap: 50px;
 }
 
+.questions-div {
+  display: none;
+}
 .questions-div p {
   font-size: 1.5rem;
 }
@@ -105,3 +126,5 @@ h2 {
     font-size: 1.2rem;
     font-weight: bold;
 }
+
+
