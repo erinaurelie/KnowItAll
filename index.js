@@ -33,4 +33,20 @@ document.querySelector('.start-quiz')
         const { questionCount } = selectedCount.dataset;
         const { difficulty } = selectedDifficulty.dataset;
         const { questionType } = selectedType.dataset;
+
+        fetchQestions(categoryId, questionCountm, difficulty, questionType)
+        
     });
+
+
+
+async function fetchQestions(categoryId, questionCount, difficulty, questionType) {
+    const response = await fetch(`https://opentdb.com/api.php?amount=${questionCount}&category=${categoryId}&difficulty=${difficulty}&type=${questionType}`);
+
+    const questions = await response.json();
+
+    console.log(questions);
+    
+}
+
+    
