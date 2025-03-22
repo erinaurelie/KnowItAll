@@ -14,3 +14,23 @@ document.querySelectorAll('ul').forEach(ul => {
     });
 });
 
+document.querySelector('.start-quiz')
+    .addEventListener('click', () => {
+        const selectedCategory = document.querySelector('.categories-grid .active');
+        const selectedCount = document.querySelector('.numbers-grid .active');
+        const selectedDifficulty = document.querySelector('.difficulty-grid .active');
+        const selectedType = document.querySelector('.type-grid .active');
+
+        if (!selectedCategory || !selectedCount|| selectedDifficulty || selectedType) {
+            alert('Please select one option from each category');
+            return;
+        }
+        
+        configure.style.display = 'none';
+        quiz.style.display = 'block';
+
+        const { categoryId } = selectedCategory.dataset;
+        const { questionCount } = selectedCount.dataset;
+        const { difficulty } = selectedDifficulty.dataset;
+        const { questionType } = selectedType.dataset;
+    });
