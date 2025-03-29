@@ -5,6 +5,7 @@
   --text-color: #212121;
   --accent-color: #03a9f4;
   --error-color: #f44336;
+  --selected-answer: #ffd900af;
 }
 
 body {
@@ -109,6 +110,7 @@ h2 {
 
 .question-options li {
     border: 1px solid var(--secondary-color);
+    border-radius: 5px;
     padding: 10px ;
     margin: 0;
     cursor: pointer;
@@ -128,3 +130,20 @@ h2 {
 }
 
 
+
+.correct-answer {
+  background-color: var(--primary-color);
+  border: 2px ridge var(--primary-color);
+}
+
+.wrong-answer {
+  background-color: var(--error-color);
+  border: 2px ridge var(--error-color);
+}
+
+.disabled {
+  pointer-events: none; /* Prevent interaction */
+  color: #666666; /* Dimmed text */
+  cursor: not-allowed; /* Show 'not-allowed' cursor */
+  opacity: 0.6; /* Slight transparency */
+}

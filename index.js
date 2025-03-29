@@ -2,6 +2,10 @@ const quiz = document.querySelector('.questions-div');
 const configure = document.querySelector('.configure');
 
 let questionIndex = 0; // keep track of current question
+let score = 0;
+
+const scoringSystem = { correctAnswer: 5, incorrectAnswer: -2 }
+
 
 document.querySelectorAll('ul').forEach(ul => {
     ul.addEventListener('click', event => {
@@ -14,6 +18,7 @@ document.querySelectorAll('ul').forEach(ul => {
         }
     });
 });
+
 
 document.querySelector('.start-quiz')
     .addEventListener('click', async () => {
@@ -43,7 +48,6 @@ document.querySelector('.start-quiz')
     });
 
 
-
 async function fetchQestions(categoryId, questionCount, difficulty, questionType) {
    try {
         const response = await fetch(`https://opentdb.com/api.php?amount=${questionCount}&category=${categoryId}&difficulty=${difficulty}&type=${questionType}`);
@@ -60,35 +64,45 @@ async function fetchQestions(categoryId, questionCount, difficulty, questionType
 
 
 function renderQuestionHTML(questions) {
-    const container = document.querySelector('.questions-div');
+    try {
+        const container = document.querySelector('.questions-div');
 
-    const currentQuestion = questions[questionIndex]; // this is the current question an object
-    console.log(currentQuestion)
+        const currentQuestion = questions[questionIndex]; // this is the current question an object
 
-    let questionHTML = `
-            <div class="header">
-                <h1>Quiz Application</h1>
-                <button>7s</button>
-            </div>
+        if (!currentQuestion) {
+            throw new Error("Could not retrieve questions from API");
+        }
 
-            <p>${currentQuestion.question}</p>
-            <ul class="question-options">${answersHTML(currentQuestion)}</ul>
 
-            <div class="questions-left">
-                <p>${questionIndex + 1 } of ${questions.length} Questions</p>
-                <button class="start-quiz js-next-question">Next</button>
-            </div>
+        let questionHTML = `
+                <div class="header">
+                    <h1>Quiz Application</h1>
+                    <button>Time Left: 10s</button>
+                </div>
 
-    `
+                <p>${currentQuestion.question}</p>
+                <ul class="question-options">${answersHTML(currentQuestion)}</ul>
+
+                <div class="questions-left">
+                    <p>${questionIndex + 1 } of ${questions.length} Questions</p>
+                    <button class="start-quiz js-next-question">Next</button>
+                </div>
+
+        `
 
         document.querySelector('.questions-div')
             .innerHTML = questionHTML;
-
+        
+        validateAnswer(currentQuestion); // validate after rendering
+        
         container.querySelector('.js-next-question')
             .addEventListener('click', () => {
                 nextQuestion(questions);
             });
+    } catch (error) {
+        console.error(error);
     }
+}
 
 // questions =>  array of questions found in data.results;
 
@@ -97,10 +111,11 @@ function answersHTML(question) {
     let answerHTML = '';
 
     const answers = [question.correct_answer, ...question.incorrect_answers];
+
     answers.sort(() => Math.random() - 0.5);
 
     answers.forEach(answer => {
-            answerHTML += `<li tabindex="0">${answer}</li>`
+            answerHTML += `<li>${answer}</li>`
     });
 
     return answerHTML;
@@ -112,9 +127,51 @@ function nextQuestion(questionsArray) {
         questionIndex++; // Move to the next question
         renderQuestionHTML(questionsArray); // Re-render the next question
     } else {
-        // display score;
+        document.querySelector('.questions-div')
+            .innerHTML = `
+                <h3>Final Score</h3>
+                <p>${score}</p>
+            `
     }
 }
 
-// after the first question when attempting to click next it return a TypeError
 
+function validateAnswer(currentQuestion) {
+    const listItems = document.querySelectorAll('.question-options li');
+
+    // the focus event listener is asychronous so we cant return it wont be available
+    listItems.forEach(li => {
+            li.addEventListener('click', event => {
+                if (li.classList.contains('disabled')) {
+                    return; // Stop execution if the option is already disabled
+                }
+            
+                listItems.forEach(item => {
+                    if (item !== event.target) {
+                        item.classList.add('disabled'); // Disable all except the clicked one
+                    }
+                });
+                    
+                const correctAnswer = currentQuestion.correct_answer;
+                const userAnswer = li.textContent;
+                const isCorrect = userAnswer === correctAnswer;
+
+                if (isCorrect) {
+                    event.target.classList.add('correct-answer');
+                    updateScore(isCorrect);
+                } else {
+                    event.target.classList.add('wrong-answer');
+                    updateScore(isCorrect);
+                }
+            });
+        });
+}
+
+
+function updateScore(isCorrect) {
+    if (isCorrect) {
+        score += scoringSystem.correctAnswer;
+    } else {
+        score += scoringSystem.incorrectAnswer;
+    }
+}
